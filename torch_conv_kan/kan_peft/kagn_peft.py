@@ -5,7 +5,6 @@ import torch
 import torch.nn as nn
 
 from kan_convs.kagn_conv import KAGNConvNDLayer, KAGNConv1DLayer, KAGNConv2DLayer, KAGNConv3DLayer
-from models.vggkan import VGG
 
 
 class PEFTKAGNConvNDLayer(KAGNConvNDLayer):
@@ -176,29 +175,3 @@ class PEFTKAGNConvNDLayer(KAGNConvNDLayer):
         y = self.base_activation(self.layer_norm[group_index](y + basis))
 
         return y
-
-
-class PEFTVGGKAGN(VGG):
-    def __init__(self, pretrained_vgg: VGG,
-                 trainable_degrees: List = None, extra_degrees=1, finetune_base: bool = False,):
-
-        features = nn.ModuleList()
-        for layer in pretrained_vgg.features:
-            if isinstance(layer, (KAGNConv1DLayer, KAGNConv2DLayer, KAGNConv3DLayer)):
-                features.append(PEFTKAGNConvNDLayer.wrap_layer(layer,
-                                                               trainable_degrees=trainable_degrees,
-                                                               extra_degrees=extra_degrees,
-                                                               finetune_base=finetune_base))
-            else:
-                features.append(layer)
-
-        super().__init__(features, pretrained_vgg.classifier, pretrained_vgg.expected_feature_shape)
-
-    def merge(self):
-        features = nn.ModuleList()
-        for layer in self.features:
-            if isinstance(layer, PEFTKAGNConvNDLayer):
-                features.append(layer.fuse_layer())
-            else:
-                features.append(layer)
-        return VGG(features, self.classifier, self.expected_feature_shape)

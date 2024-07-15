@@ -1,1 +1,1 @@
-from torch_conv_kan import kan_conv, kan_peft, kans, utils
+from torch_conv_kan import utils, kans ,kan_convs, kan_peft 
