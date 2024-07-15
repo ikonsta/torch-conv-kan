@@ -4,7 +4,7 @@ from typing import List
 import torch
 import torch.nn as nn
 
-from kan_convs.kagn_conv import KAGNConvNDLayer, KAGNConv1DLayer, KAGNConv2DLayer, KAGNConv3DLayer
+from torch_conv_kan.kan_convs.kagn_conv import KAGNConvNDLayer, KAGNConv1DLayer, KAGNConv2DLayer, KAGNConv3DLayer
 
 
 class PEFTKAGNConvNDLayer(KAGNConvNDLayer):
