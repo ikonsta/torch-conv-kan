@@ -1,1 +1,1 @@
-from .kagn_peft import PEFTKAGNConvNDLayer, PEFTVGGKAGN
+from .kagn_peft import PEFTKAGNConvNDLayer
